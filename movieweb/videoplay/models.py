@@ -5,9 +5,12 @@ from django.db import models
 ''' 视频 URL 存数据库 '''
 class Movie(models.Model):
     movie = models.CharField(max_length = 100)
+    movie_name = models.CharField(max_length = 100,default='未知电影')
+    movie_img = models.CharField(max_length = 100,null=True)
+    hot_tag = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.movie
+        return self.movie_name
 
 ''' 用户名 存数据库 '''
 class User(models.Model):
