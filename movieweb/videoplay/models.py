@@ -8,6 +8,8 @@ class Movie(models.Model):
     movie_name = models.CharField(max_length = 100,default='未知电影')
     movie_img = models.CharField(max_length = 100,null=True)
     hot_tag = models.BooleanField(default=False)
+    movie_type = models.CharField(max_length = 100,default='动作')
+    new_tag=models.BooleanField(default=False)
 
     def __str__(self):
         return self.movie_name
