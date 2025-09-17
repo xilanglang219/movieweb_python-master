@@ -222,7 +222,7 @@ def index(request):
     #  用户名超时 执行
     else:
         return render_to_response(request, 'index.html', {'error': True})
-
+# hahaha
 def load_source():
     return
 
