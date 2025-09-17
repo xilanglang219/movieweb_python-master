@@ -14,6 +14,7 @@ import requests
 # 导入缓存
 from django.core.cache import cache
 # 导入模型
+from django.core.exceptions import ObjectDoesNotExist
 from videoplay.models import Movie
 from videoplay.models import User, UserComment, MoviePay
 # 导入表单
@@ -211,20 +212,31 @@ def login(request):
 def index(request):
     username = request.COOKIES.get('username', None)
     # username = request.session.get('username', 'anonymity') /使用 session 来获取传来的 cookie值， 等效同上
-    a=load_source()
     ''' 设置 session 的数据（传到视频播放页面）'''
     request.session['comment_username'] = username
+    video_data = {
+                'Action': get_movie('动作'),
+                'Adventure': get_movie('冒险'),
+                'Cartoon': get_movie('动画'),
+                'Comedy': get_movie('喜剧'),
+                'Crime': get_movie('犯罪'),
+                'Love': get_movie('爱情'),
+                'Science': get_movie('科幻'),
+                'Swordsman': get_movie('武侠')
+            }
     # 获取用户名成功 执行
-    videos=Movie.objects.all()
-
     if username != None:
-        return render_to_response(request, 'index.html', {"username": username,'web_title':'不好看视频','videos':videos})
+        return render_to_response(request, 'index.html', {"username": username,'web_title':'不好看视频','videos':video_data})
     #  用户名超时 执行
     else:
         return render_to_response(request, 'index.html', {'error': True})
 # hahaha
-def load_source():
-    return
+def get_movie(movie_type):
+    try:
+        movie = Movie.objects.filter(movie_type=movie_type)
+        return  movie
+    except ObjectDoesNotExist:
+        return Movie.objects.none()
 
 """ 实现swagger code """
 from rest_framework import viewsets

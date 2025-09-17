@@ -41,6 +41,11 @@
 }
 .new_image {
   position: absolute;
+  top: 0px;
+  right: 42px;
+}
+.hot_image {
+  position: absolute;
   top: 0;
   left: 0;
 }
