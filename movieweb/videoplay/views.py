@@ -2,10 +2,11 @@
 from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
-from django.template import loader, Context
+from django.template import Template, loader, Context
 from django.shortcuts import render as render_to_response
 
 import time
+import html
 import random
 import string
 import hashlib
@@ -126,7 +127,7 @@ def play(request, id):
     sign.sign()
     # 将获取到的字符串类型参数转换为 int
     video_id = int(id)
-    # 获取(数据库)模型中对应电影的对象
+    # 获取(数据库)模型中对应电影的对象1
     video_source = Movie.objects.get(id = video_id)
     # 获取数据库中所有的评论对象 | all() 和 filter()函数返回一个记录集 (列表)
     comments_list = UserComment.objects.all()
@@ -210,14 +211,20 @@ def login(request):
 def index(request):
     username = request.COOKIES.get('username', None)
     # username = request.session.get('username', 'anonymity') /使用 session 来获取传来的 cookie值， 等效同上
+    a=load_source()
     ''' 设置 session 的数据（传到视频播放页面）'''
     request.session['comment_username'] = username
     # 获取用户名成功 执行
+    videos=Movie.objects.all()
+
     if username != None:
-        return render_to_response(request, 'index.html', {"username": username})
+        return render_to_response(request, 'index.html', {"username": username,'web_title':'不好看视频','videos':videos})
     #  用户名超时 执行
     else:
         return render_to_response(request, 'index.html', {'error': True})
+
+def load_source():
+    return
 
 """ 实现swagger code """
 from rest_framework import viewsets

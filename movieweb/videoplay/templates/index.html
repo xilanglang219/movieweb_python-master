@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>小宇视频</title>
+  <title>{{web_title}}</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 
   <meta name="viewport" content="width=device-width, height=divice-height, inital-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
@@ -20,7 +20,7 @@
       {% if error %}
         <p class="text-danger">☹ 欧漏。你还未登录 or 用户名存储已过期，可重新<a href="/">登录</a> ……</p>
       {% else %}
-        <p class="text-primary">☺ 登录成功。欢迎用户 {{ username }}，来到小宇视频 ……</p>
+        <p class="text-primary">☺ 登录成功。欢迎用户 {{ username }}，来到精彩视频 ……</p>
       {% endif %}
     </div>
 
@@ -71,18 +71,20 @@
     <div class="tab-content" id="my-content">
       <div class="tab-pane fade in active" id="tab0">
         <ul class="figures_lists">
-          <li class="list_item" data-trigger-class="list_item_hover">
-            <a _boss="film" href="video_1.html" target="_blank" class="figure" tabindex="-1">
-              <img src="{% static 'images/Action/01.jpg' %}" alt="澳门风云3">
-            </a>
-            <div class="label_title">
-              <span class="label_font">VIP影片</span>
-            </div>
-            <strong class="figure_title">
-              <a _boss="film" href="video_1.html" target="_blank" title="澳门风云3">澳门风云3</a>
-            </strong>
-          </li>
-
+          {% for video in videos %}
+            <li class="list_item" data-trigger-class="list_item_hover">
+               <a _boss="film" href="video_{{video.id}}.html" target="_blank" class="figure" tabindex="-1">
+                 {% if video.movie_img == null %}
+                   <img src="{% static 'images/Action/16.jpg' %}" alt="{{video.movie_name}}">
+                 {% else %}
+                   <img src="{% static '{{video.movie_img}}' %}" alt="{{video.movie_name}}"></img>
+    <!-- 所有条件都为假时执行 -->
+                 {% endif %}
+                </a>
+               <strong class="figure_title">
+                <a _boss="film" href="video_{{video.id}}.html" target="_blank" title="{{video.movie_name}}">{{video.movie_name}}</a>
+               </strong>
+          {% endfor %}
           <li class="list_item" data-trigger-class="list_item_hover">
             <a _boss="film" href="video_2.html" target="_blank" class="figure" tabindex="-1">
               <img src="{% static 'images/Action/02.jpg' %}" alt="唐人街探案">
@@ -145,7 +147,7 @@
             <a _boss="film" href="video_7.html" target="_blank" class="figure" tabindex="-1">
               <img src="{% static 'images/Action/07.jpg' %}" alt="西游记之大圣归来">
             </a>
-            <image class="new_image" src="{% static 'images/hot-yellow.gif' %}"/>
+            <image class="new_image" src="{% static 'images/hot-yellow.gif' %}"/>1
             <strong class="figure_title">
               <a _boss="film" href="video_7.html" target="_blank" title="西游记之大圣归来">西游记之大圣归来</a>
             </strong>
@@ -241,24 +243,24 @@
     				</strong>
 			    </li>
 
-          <li class="list_item" data-trigger-class="list_item_hover">
-    				<a _boss="film" href="video_19.html" target="_blank" class="figure" tabindex="-1">
-    					<img src="{% static 'images/Action/waaa-552.png' %}" alt="waaa-552">
-    				</a>
-            <image class="new_image" src="{% static 'images/hot-yellow.gif' %}"/>
-    				<strong class="figure_title">
-    					<a _boss="film" href="video_19.html" target="_blank" title="富春山居图">waaa-552</a>
-    				</strong>
-			    </li>
-          <li class="list_item" data-trigger-class="list_item_hover">
-    				<a _boss="film" href="video_20.html" target="_blank" class="figure" tabindex="-1">
-    					<img src="{% static 'images/Action/waaa-552.png' %}" alt="oceans">
-    				</a>
-            <image class="new_image" src="{% static 'images/hot-yellow.gif' %}"/>
-    				<strong class="figure_title">
-    					<a _boss="film" href="video_19.html" target="_blank" title="海洋">海洋</a>
-    				</strong>
-			    </li>
+<!--          <li class="list_item" data-trigger-class="list_item_hover">-->
+<!--    				<a _boss="film" href="video_19.html" target="_blank" class="figure" tabindex="-1">-->
+<!--    					<img src="{% static 'images/Action/waaa-552.png' %}" alt="waaa-552">-->
+<!--    				</a>-->
+<!--            <image class="new_image" src="{% static 'images/hot-yellow.gif' %}"/>-->
+<!--    				<strong class="figure_title">-->
+<!--    					<a _boss="film" href="video_19.html" target="_blank" title="富春山居图">waaa-552</a>-->
+<!--    				</strong>-->
+<!--			    </li>-->
+<!--          <li class="list_item" data-trigger-class="list_item_hover">-->
+<!--    				<a _boss="film" href="video_20.html" target="_blank" class="figure" tabindex="-1">-->
+<!--    					<img src="{% static 'images/Action/waaa-552.png' %}" alt="oceans">-->
+<!--    				</a>-->
+<!--            <image class="new_image" src="{% static 'images/hot-yellow.gif' %}"/>-->
+<!--    				<strong class="figure_title">-->
+<!--    					<a _boss="film" href="video_19.html" target="_blank" title="海洋">海洋</a>-->
+<!--    				</strong>-->
+<!--			    </li>-->
         </ul>
       </div>
 
@@ -1666,5 +1668,19 @@
       </div>
     </div>
   </div>
+  <script>
+      function addMovieToActionTab(movieTitle, movieImage, movieLink,movietype) {
+    var movieItem = `        <li class="list_item" data-trigger-class="list_item_hover">
+            <a _boss="film" href="${movie_id}" target="_blank" class="figure" tabindex="-1">
+                <img src="${movieImage}" alt="${movieTitle}">
+            </a>
+            <strong class="figure_title">
+                <a _boss="film" href="${movie_id}" target="_blank" title="${movieTitle}">${movieTitle}</a>
+            </strong>
+        </li>
+    `;
+    document.querySelector("#${movietype} .figures_lists").innerHTML += movieItem;
+}
+  </script>
 </body>
 </html>
